@@ -1,6 +1,10 @@
 # redux-immutable-ops
 ---
 
+[![Build Status](https://img.shields.io/travis/nitishkr88/redux-immutable-ops/v6.svg?style=flat)](https://travis-ci.org/nitishkr88/redux-immutable-ops)
+[![codecov.io](https://codecov.io/gh/nitishkr88/redux-immutable-ops/branch/master/graph/badge.svg)](https://codecov.io/gh/nitishkr88/redux-immutable-ops)
+[![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
+
 A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays.
 Works on the immutable update patters as defined by [Redux](https://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html).
 
