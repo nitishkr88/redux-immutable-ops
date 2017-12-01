@@ -32,7 +32,7 @@ Returns an object, with the value at `path` set to `value`. `path` can be a dot-
 values to traverse. Index of array value which need to be updated can also be specified in the `path`. Paths not already
 existing would be created.
 
-```javascript```
+```javascript
 import { setIn } from "redux-immutable-ops"
 
 const state = {
@@ -79,7 +79,7 @@ expect(result2).toEqual({
 Returns the value specified by `path`. `path` can be a dot-separated list of attribute
 values to traverse. Index of array value which need to be fetched can also be specified in the `path`.
 
-```javascript```
+```javascript
 import { getIn } from "redux-immutable-ops"
 
 const state = {
@@ -97,7 +97,7 @@ expect(getIn(state, 'foo.bar[1].dog')).toBe(42)
 Returns a new object, without the key specified in `path`. `path` can be a dot-separated list of attribute
 values to traverse. Index of array value which need to be deleted can also be specified in the `path`.
 
-```javascript```
+```javascript
 import { deleteIn } from "redux-immutable-ops"
 
 const state = ['the', 'quick', 'brown', 'fox']
@@ -132,7 +132,7 @@ expect(result1).toEqual({
 
 Similar to [Array.splice](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice), but returns a shallow copy.
 
-```javascript```
+```javascript
 import { splice } from "redux-immutable-ops"
 
 expect(splice(['b', 'c', 'd'], 0, 0, 'a')).toEqual(['a', 'b', 'c', 'd'])
