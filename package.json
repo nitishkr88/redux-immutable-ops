@@ -1,0 +1,109 @@
+{
+  "name": "redux-immutable-ops",
+  "version": "0.1.0",
+  "description": "A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays (mainly to be used in redux reducers)",
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "jsnext:main": "./es/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nitishkr88/redux-immutable-ops.git"
+  },
+  "author": "Nitish Kumar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nitishkr88/redux-immutable-ops/issues"
+  },
+  "homepage": "https://github.com/nitishkr88/redux-immutable-ops#readme",
+  "scripts": {
+    "analyze": "webpack src/index.js dist/redux-immutable-ops.js -p --bail --profile --json > stats.json && webpack-bundle-analyzer stats.json",
+    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min && npm run build:flow",
+    "build:lib": "babel src --out-dir lib --ignore __tests__",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore __tests__",
+    "build:flow": "cp src/*.js.flow lib && cp src/*.js.flow es",
+    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/redux-immutable-ops.js",
+    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/redux-immutable-ops.min.js",
+    "clean": "rimraf dist lib es",
+    "lint": "eslint src",
+    "format": "prettier-eslint \"+(src|examples)/**/*.+(js|js.flow)\" --ignore \"**/bundle.js\" --write --no-semi --single-quote --trailing-comma=none",
+    "prepublish": "npm run lint && npm run test:cov && npm run test:flow && npm run clean && npm run build",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:flow": "flow check",
+    "test:watch": "npm test -- --watch",
+    "test:cov": "npm run test -- --coverage"
+  },
+  "keywords": [
+    "flux",
+    "redux",
+    "immutable",
+    "redux-immutable-ops"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.2",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-lodash": "^3.3.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-preset-es2015-no-commonjs": "0.0.2",
+    "babel-preset-flow": "^6.23.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "codecov.io": "^0.1.6",
+    "cross-env": "^5.1.1",
+    "eslint": "^4.12.0",
+    "eslint-config-react-app": "^2.0.1",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.5.1",
+    "flow-bin": "^0.59.0",
+    "flux-standard-action": "^2.0.0",
+    "jest": "^21.2.1",
+    "lodash-webpack-plugin": "^0.11.4",
+    "prettier": "^1.8.2",
+    "prettier-eslint-cli": "^4.4.0",
+    "rimraf": "^2.6.2",
+    "webpack": "^3.8.1",
+    "webpack-bundle-analyzer": "^2.9.1"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "files": [
+    "README.md",
+    "es",
+    "lib",
+    "dist",
+    "*.js.flow"
+  ],
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/__tests__/**/*.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
+    "testRegex": "__tests__/.*\\.spec\\.js$",
+    "testEnvironment": "jsdom"
+  },
+  "npmName": "redux-immutable-ops",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ]
+}

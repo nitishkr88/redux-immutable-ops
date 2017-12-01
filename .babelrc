@@ -1,0 +1,17 @@
+{
+  "presets": ["es2015-no-commonjs", "stage-2", "flow"],
+  "env": {
+    "development": {
+      "plugins": ["lodash", "transform-es2015-modules-commonjs"]
+    },
+    "test": {
+      "plugins": ["lodash", "transform-es2015-modules-commonjs", "istanbul"]
+    },
+    "production": {
+      "plugins": ["lodash", "transform-es2015-modules-commonjs"]
+    },
+    "es": {
+      "plugins": ["lodash", "./babel-lodash-es"]
+    }
+  }
+}
