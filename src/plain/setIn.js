@@ -32,11 +32,8 @@ const setInWithPath = (
   }
 
   return {
-
-
-    ...state,        [first]: next,
-
-
+    ...state,
+    [first]: next
   }
 }
 
