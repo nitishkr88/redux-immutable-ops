@@ -25,7 +25,7 @@
     "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/redux-immutable-ops.min.js",
     "clean": "rimraf dist lib es",
     "lint": "eslint src",
-    "format": "prettier-eslint \"+(src|examples)/**/*.+(js|js.flow)\" --ignore \"**/bundle.js\" --write --no-semi --single-quote --trailing-comma=none",
+    "precommit": "lint-staged",
     "prepublish": "npm run lint && npm run test:cov && npm run test:flow && npm run clean && npm run build",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:flow": "flow check",
@@ -80,6 +80,9 @@
     "dist",
     "*.js.flow"
   ],
+  "lint-staged": {
+    "*.{js,json,md}": ["prettier-eslint --write", "git add"]
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.js",
