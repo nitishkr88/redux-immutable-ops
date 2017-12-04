@@ -75,7 +75,8 @@
     "webpack-bundle-analyzer": "^2.9.1"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "lodash-es": "^4.17.4"
   },
   "files": ["README.md", "es", "lib", "dist", "*.js.flow"],
   "lint-staged": {
