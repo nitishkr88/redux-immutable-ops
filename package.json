@@ -1,8 +1,7 @@
 {
   "name": "redux-immutable-ops",
-  "version": "0.1.1",
-  "description":
-    "A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays (mainly to be used in redux reducers)",
+  "version": "0.1.2",
+  "description": "A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays (mainly to be used in redux reducers)",
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "jsnext:main": "./es/index.js",
@@ -17,29 +16,28 @@
   },
   "homepage": "https://github.com/nitishkr88/redux-immutable-ops#readme",
   "scripts": {
-    "analyze":
-      "webpack src/index.js dist/redux-immutable-ops.js -p --bail --profile --json > stats.json && webpack-bundle-analyzer stats.json",
-    "build":
-      "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min && npm run build:flow",
+    "analyze": "webpack src/index.js dist/redux-immutable-ops.js -p --bail --profile --json > stats.json && webpack-bundle-analyzer stats.json",
+    "build": "npm run build:lib && npm run build:es && npm run build:umd && npm run build:umd:min && npm run build:flow",
     "build:lib": "babel src --out-dir lib --ignore __tests__",
-    "build:es":
-      "cross-env BABEL_ENV=es babel src --out-dir es --ignore __tests__",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es --ignore __tests__",
     "build:flow": "cp src/*.js.flow lib && cp src/*.js.flow es",
-    "build:umd":
-      "cross-env NODE_ENV=development webpack src/index.js dist/redux-immutable-ops.js",
-    "build:umd:min":
-      "cross-env NODE_ENV=production webpack src/index.js dist/redux-immutable-ops.min.js",
+    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/redux-immutable-ops.js",
+    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/redux-immutable-ops.min.js",
     "clean": "rimraf dist lib es",
     "lint": "eslint src",
     "precommit": "lint-staged",
-    "prepublish":
-      "npm run lint && npm run test:cov && npm run test:flow && npm run clean && npm run build",
+    "prepublish": "npm run lint && npm run test:cov && npm run test:flow && npm run clean && npm run build",
     "test": "cross-env NODE_ENV=test jest --runInBand",
     "test:flow": "flow check",
     "test:watch": "npm test -- --watch",
     "test:cov": "npm run test -- --coverage"
   },
-  "keywords": ["flux", "redux", "immutable", "redux-immutable-ops"],
+  "keywords": [
+    "flux",
+    "redux",
+    "immutable",
+    "redux-immutable-ops"
+  ],
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -78,14 +76,33 @@
     "lodash": "^4.17.4",
     "lodash-es": "^4.17.4"
   },
-  "files": ["README.md", "es", "lib", "dist", "*.js.flow"],
+  "files": [
+    "README.md",
+    "es",
+    "lib",
+    "dist",
+    "*.js.flow"
+  ],
   "lint-staged": {
-    "*.{js}": ["prettier-eslint --write", "git add"]
+    "*.{js}": [
+      "prettier-eslint --write",
+      "git add"
+    ]
   },
   "jest": {
-    "collectCoverageFrom": ["src/**/*.js", "!src/**/__tests__/**/*.js"],
-    "coverageReporters": ["text", "lcov", "html"],
-    "coveragePathIgnorePatterns": ["/node_modules/", "/dist/"],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/__tests__/**/*.js"
+    ],
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/"
+    ],
     "testRegex": "__tests__/.*\\.spec\\.js$",
     "testEnvironment": "jsdom"
   },
@@ -93,7 +110,9 @@
   "npmFileMap": [
     {
       "basePath": "/dist/",
-      "files": ["*.js"]
+      "files": [
+        "*.js"
+      ]
     }
   ]
 }
