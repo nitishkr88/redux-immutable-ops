@@ -1,0 +1,287 @@
+<!doctype html>
+
+<!--
+  By: @nitishkr88
+-->
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Immutability Patterns in React and Redux | by Nitish Kumar @nitishkr88</title>
+
+    <meta name="description" content="Authoring impress.js presentations in Markdown" />
+    <meta name="author" content="Nitish Kumar" />
+    <link rel="stylesheet" href="../impress.js/extras/highlight/styles/github.css">
+
+
+    <!--
+        Styles specific for this example presentation.
+    -->
+    <link href="css/markdown-slides.css" rel="stylesheet" />
+    <link href="css/devopsy.css" rel="stylesheet" />
+    <link href="css/effects.css" rel="stylesheet" />
+
+</head>
+
+<body class="impress-not-supported">
+<div class="fallback-message">
+    <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+    <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+</div>
+
+<div id="impress" data-transition-duration="1000">
+
+<div id="markdown" class="step slide markdown" data-rel-x="0" data-rel-y="900">
+# Immutability Patterns in React and Redux
+---
+
+## Nitish Kumar
+### twitter: @nitishk88
+
+-----
+# How to compare objects?
+*Reference Equality* and *Value Equality*
+
+    var x = 12,
+        y = 12;
+
+    var object = { x: 1, y: 2 };
+    var object2 = { x: 1, y: 2 };
+    object === object2 // false
+
+* `object` and `object2` are the same in terms of values
+* but they are not the same in terms of reference
+
+If you think about equality of things, you can in fact think about two things:
+*does a thing mean the same as the other thing?*
+*is a thing exactly the same thing as the other thing?*
+
+-----
+# Continued...
+
+When you compare objects in JavaScript, they are compared by a reference. That means
+the equality check like this:
+
+    object === object2
+
+Answers the question: Is `object` the same object as `object2`? In fact, when you assign
+an object to variable x, you assign a reference of an object to variable x.
+
+    object = object2;
+    object === object2; // true
+
+-----
+# Continued...
+This has some interesting consequences.
+
+    object.x = 12;
+    object.x; // 12
+    object2.x; // 12
+
+In this case, you did assign x key of an object `object`. But since `object` and `object2` points to the same reference, the change is visible through both variables.
+
+Every complex data structure in JavaScript follows the principles of reference equality. This includes arrays and objects. In fact, arrays are objects too:
+
+    typeof([1,2,3]) // "object"
+-----
+# Value Equality
+Value equality answers the question: Does a thing means the same as the other thing?
+
+    var object = { x: 1, y: 2 };
+    var object2 = { x: 1, y: 2 };
+    valueEqual(object, object2) === true
+
+Implementing such equality would be harder with nested data structures. Objects can have arbitrary keys and values.
+It can contain other objects within them. To make such equality for objects, you’d need to follow the following algorithm:
+
+-----
+# Continued...
+    // Input: an object1 and object2
+    // Output:
+        true if an object1 is equal in terms of values to object2
+    valueEqual(object1, object2):
+      object1keys = &lt;list of keys of object1&gt;
+      object2keys = &lt;list of keys of object2&gt;
+      return false if length(object1keys) != length(object2keys)
+
+      for each key in object1keys:
+        return false if key not in object2keys
+        return false if typeof(object1[key]) != typeof(object2[key])
+        if object1[key] is an object:
+          keyEqual = valueEqual(object1[key], object2[key])
+          return false if keyEqual != false
+        if object1[key] is a primitive:
+          return false if object1[key] != object2[key]
+      return true
+
+For deeply nested structures, it can make hundreds of equality checks to compare two objects.
+Such equality checks are commonly called [deep equality checks](https://github.com/lodash/lodash/blob/master/.internal/baseIsEqualDeep.js).
+-----
+# Get rid of mutations
+*Whenever your object would be mutated, don’t do it. Instead, create a changed copy of it*
+
+You can use:
+
+* Object.assign({}, ...)
+* [].concat
+* ... operator
+* External libraries (Immutable.js, Icepick, etc)
+
+-----
+
+# Not using an external library?
+
+* Pros
+  * Seemless interoperability with JavaScript
+  * Suitable for small and simple JavaScript objects
+  * Easy to debug
+* Cons
+  * Performance issues for big datasets
+  * Tedious and harder to read code when doing nested updates
+  * Accidental direct mutations
+
+-----
+
+# Using Immutable.js?
+
+* Cons
+  * Difficult to interoperate with. For example, instead of `myObj.prop1.prop2.prop3`, you would use `ImmutableMap.getIn([‘prop1’, ‘prop2’, ‘prop3’])`
+  * Can spread throughout the codebase, as the codebase must know what is, and what is not, an Immutable.JS object
+  * Difficult to debug
+  * No Destructuring or Spread Operators
+  * Not suitable for small values that change often
+
+-----
+# Continued...
+
+* Pros
+  * [Persistent data structures and structural sharing](https://medium.com/@dtinth/immutable-js-persistent-data-structures-and-structural-sharing-6d163fbd73d2)
+  * Optimized for large datasets and objects
+  * Mitigates accidental mutations
+  * Works great if some [opinionated best practices are followed](https://redux.js.org/docs/recipes/UsingImmutableJS.html#what-are-some-opinionated-best-practices-for-using-immutablejs-with-redux)
+
+-----
+# Immutability and React.js
+
+  * When state changes, component re-renders. React can’t assume anything about your state. That’s why setting state
+  always re-renders the component - even if it’s not necessary at all, as React [doesn't deeply compare props/state by default](https://reactjs.org/blog/2016/01/08/A-implies-B-does-not-imply-B-implies-A.html)
+  * For a complicated state (nested objects), you'd be forced to make a deep equality check,
+  because when objects are compared using reference equality you can’t be sure whether the next state is changed. *So
+  if you want to optimize React to perform updates only when necessary, you would need to make hundreds of value equality checks if your state is huge*
+
+-----
+# shouldComponentUpdate?
+
+It is a lifecycle optimization method which allows your Component to exit the Update life cycle if there is no reason to apply a new render
+
+* Out of the box, the shouldComponentUpdate() is a no-op that returns true
+* Implementation for Pure React components
+
+        function shallowEqual(objA: mixed, objB: mixed): boolean {....}
+
+        function shallowCompare(instance, nextProps, nextState) {
+          return (!shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState));
+        }
+
+        shouldComponentUpdate: function(nextProps, nextState) {
+          return shallowCompare(this, nextProps, nextState);
+        }
+
+-----
+# Continued...
+
+`shallowCompare` uses `===` to compare objects. If current state is mutated for a Pure Component, it will return `true` resulting in no re-render.
+
+This is why [Redux](https://redux.js.org/docs/introduction/ThreePrinciples.html#changes-are-made-with-pure-functions) requires pure methods for reducers. If you need to change nested data you have to clone the objects and make sure a new instance is always returned.
+This allows for shallowCompare() to see the change and update the component.
+
+Usage of **Immutable.js** enforces immutability. We can leverage `shouldComponentUpdate()` and have it verify that props and state have changed.
+
+
+-----
+# As per Redux docs
+
+The process of correctly applying immutable updates to deeply nested state can easily become verbose and hard to read.
+Here's what an example of updating `state.first.second[someId].fourth` might look like:
+
+        function updateVeryNestedField(state, action) {
+            return {
+                ...state,
+                first : {
+                    ...state.first,
+                    second : {
+                        ...state.first.second,
+                        [action.someId] : {
+                            ...state.first.second[action.someId],
+                            fourth : action.someValue
+                        }
+                    }}}}
+
+-----
+# A nice API please
+
+**Note**: Interoperable with JavaScript
+
+      import { setIn } from "somewhere"
+
+      function updateVeryNestedField(state, action) {
+        const newState = setIn(state, `first.second[${action.someId}].fourth`, action.someValue)
+        console.log(state === newState) // false
+        return newState
+      }
+
+      import { deleteIn } from "somewhere"
+
+      function deleteVeryNestedField(state, action) {
+        const newState = deleteIn(state, `first.second[${action.someId}].fourth`)
+        console.log(state === newState) // false
+        return newState
+      }
+
+*[More test cases](https://github.com/nitishkr88/redux-immutable-ops/blob/master/src/plain/__tests__/setIn.spec.js).....*
+
+-----
+# redux-immutable-ops
+
+* [npm](https://www.npmjs.com/package/redux-immutable-ops)
+* [github](https://github.com/nitishkr88/redux-immutable-ops)
+
+</div>
+
+<div id="tilted-slide" class="step slide markdown" data-rotate="-85" data-x="2000" data-y="2000" data-z="1000" data-scale="4">
+# Thank you
+
+References:
+
+  * https://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html
+  * https://medium.com/@dtinth/immutable-js-persistent-data-structures-and-structural-sharing-6d163fbd73d2
+  * http://reactkungfu.com/2015/08/pros-and-cons-of-using-immutability-with-react-js/
+  * [redux-immutable-ops](https://github.com/nitishkr88/redux-immutable-ops)
+</div>
+
+
+<div id="overview" class="step" data-x="5000" data-y="4000" data-scale="10" style="pointer-events: none;" data-rotate="5">
+</div>
+
+</div>
+
+<div id="impress-toolbar"></div>
+<div id="impress-help"></div>
+
+
+<!-- Extra modules
+     Load highlight.js, mermaid.js and markdown.js from extras.
+     See also src/plugins/extras/extras.js -->
+<script type="text/javascript" src="../impress.js/extras/highlight/highlight.pack.js"></script>
+<script type="text/javascript" src="../impress.js/extras/mermaid/mermaid.min.js"></script>
+<script type="text/javascript" src="../impress.js/extras/markdown/markdown.js"></script>
+
+<!--
+    To make all described above really work, you need to include impress.js in the page.
+    You also need to call a `impress().init()` function to initialize impress.js presentation.
+    And you should do it in the end of your document.
+-->
+<script type="text/javascript" src="../impress.js/js/impress.js"></script>
+<script>impress().init();</script>
+</body>
+</html>

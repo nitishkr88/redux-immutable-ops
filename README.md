@@ -24,9 +24,38 @@ yarn add redux-immutable-ops
 * Typed with [Flow](https://flow.org/)
 
 ## Example Usage
- ```javascript
+Updating Nested Objects in a reducer function.
 
+Set `state.first.second[someId].fourth` from `someValue` key in `action`
+* Using **spread** operator
+
+ ```javascript
+ function updateVeryNestedField(state, action) {
+     return {
+         ...state,
+         first : {
+             ...state.first,
+             second : {
+                 ...state.first.second,
+                 [action.someId] : {
+                     ...state.first.second[action.someId],
+                     fourth : action.someValue
+                 }
+             }
+         }
+     }
+ }
  ```
+
+* Using **redux-immutable-ops**
+
+  ```javascript
+  import { setIn } from "redux-immutable-ops";
+
+  function updateVeryNestedField(state, action) {
+    return setIn(state, `first.second[${action.someId}].fourth`, action.someValue)
+  }
+  ```
 
 ## API
 
