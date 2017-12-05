@@ -29,8 +29,8 @@ Updating Nested Objects in a reducer function.
 Set `state.first.second[someId].fourth` from `someValue` key in `action`
 * Using **spread** operator
 
- ```javascript
- function updateVeryNestedField(state, action) {
+  ```javascript
+  function updateVeryNestedField(state, action) {
      return {
          ...state,
          first : {
@@ -44,8 +44,8 @@ Set `state.first.second[someId].fourth` from `someValue` key in `action`
              }
          }
      }
- }
- ```
+  }
+  ```
 
 * Using **redux-immutable-ops**
 
