@@ -1,6 +1,6 @@
 {
   "name": "redux-immutable-ops",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays (mainly to be used in redux reducers)",
   "main": "./lib/index.js",
   "module": "./es/index.js",
