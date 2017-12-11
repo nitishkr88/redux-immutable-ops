@@ -1,18 +1,18 @@
 import deleteIn from '../deleteIn'
 
-describe('structure.plain.deleteIn', () => {
-  it('should not return state if path not found', () => {
+describe('ops.deleteIn', () => {
+  it('should not return state if path is not found', () => {
     const state = { foo: 'bar' }
     expect(deleteIn(state, undefined)).toBe(state)
-    expect(deleteIn(state, 'dog')).toBe(state)
+    expect(deleteIn(state, 'cat')).toBe(state)
     expect(deleteIn(state, 'cat.rat.pig')).toBe(state)
   })
 
-  it('should do nothing if array index out of bounds', () => {
+  it('should do nothing if array index is out of bound', () => {
     const state = {
       foo: [
         {
-          bar: ['dog']
+          bar: ['cat']
         }
       ]
     }
@@ -24,7 +24,7 @@ describe('structure.plain.deleteIn', () => {
     expect(() =>
       deleteIn(
         {
-          foo: ['dog']
+          foo: ['cat']
         },
         'foo[bar]'
       )
@@ -32,24 +32,24 @@ describe('structure.plain.deleteIn', () => {
     expect(() =>
       deleteIn(
         {
-          foo: [{ dog: 'fido' }]
+          foo: [{ cat: 'fido' }]
         },
-        'foo[bar].dog'
+        'foo[bar].cat'
       )
     ).toThrow(/array elements with a number/)
   })
 
   it('should delete shallow keys without mutating state', () => {
-    const state = { foo: 'bar', dog: 'fido' }
+    const state = { foo: 'bar', cat: 'fido' }
     expect(deleteIn(state, 'foo')).not.toBe(state)
 
     expect(deleteIn(state, 'foo')).toEqual({
-      dog: 'fido'
+      cat: 'fido'
     })
 
-    expect(deleteIn(state, 'dog')).not.toBe(state)
+    expect(deleteIn(state, 'cat')).not.toBe(state)
 
-    expect(deleteIn(state, 'dog')).toEqual({
+    expect(deleteIn(state, 'cat')).toEqual({
       foo: 'bar'
     })
   })
@@ -70,7 +70,7 @@ describe('structure.plain.deleteIn', () => {
   it('should delete deep keys without mutating state', () => {
     const state = {
       foo: {
-        bar: ['baz', { dog: 42 }]
+        bar: ['baz', { cat: 42 }]
       }
     }
 
@@ -81,7 +81,7 @@ describe('structure.plain.deleteIn', () => {
       foo: {
         bar: [
           {
-            dog: 42
+            cat: 42
           }
         ]
       }
@@ -92,7 +92,7 @@ describe('structure.plain.deleteIn', () => {
     expect(result1.foo.bar.length).toBe(1)
     expect(result1.foo.bar[0]).toBe(state.foo.bar[1])
 
-    const result2 = deleteIn(state, 'foo.bar[1].dog')
+    const result2 = deleteIn(state, 'foo.bar[1].cat')
     expect(result2).not.toBe(state)
 
     expect(result2).toEqual({
@@ -122,7 +122,7 @@ describe('structure.plain.deleteIn', () => {
         bar: [{}]
       }
     }
-    const result = deleteIn(state, 'foo.bar[0].dog')
+    const result = deleteIn(state, 'foo.bar[0].cat')
     expect(result).toBe(state)
 
     expect(result).toEqual({

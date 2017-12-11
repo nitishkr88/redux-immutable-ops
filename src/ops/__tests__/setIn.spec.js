@@ -1,10 +1,10 @@
 import setIn from '../setIn'
 
-describe('structure.plain.setIn', () => {
+describe('ops.setIn', () => {
   it('should create a map if state is undefined and key is string', () => {
-    expect(typeof setIn(undefined, 'dog', 'fido')).toBe('object')
-    expect(setIn(undefined, 'dog', 'fido')).toEqual({
-      dog: 'fido'
+    expect(typeof setIn(undefined, 'cat', 'fido')).toBe('object')
+    expect(setIn(undefined, 'cat', 'fido')).toEqual({
+      cat: 'fido'
     })
   })
 
@@ -52,7 +52,7 @@ describe('structure.plain.setIn', () => {
   it('should set and deep keys without mutating state', () => {
     const state = {
       foo: {
-        bar: ['baz', { dog: 42 }]
+        bar: ['baz', { cat: 42 }]
       }
     }
     const result1 = setIn(state, 'tv.best.canines[0]', 'scooby')
@@ -63,7 +63,7 @@ describe('structure.plain.setIn', () => {
         bar: [
           'baz',
           {
-            dog: 42
+            cat: 42
           }
         ]
       },
@@ -85,7 +85,7 @@ describe('structure.plain.setIn', () => {
         bar: [
           'cat',
           {
-            dog: 42
+            cat: 42
           }
         ]
       }
@@ -95,7 +95,7 @@ describe('structure.plain.setIn', () => {
     expect(result2.foo.bar).not.toBe(state.foo.bar)
     expect(result2.foo.bar[1]).toBe(state.foo.bar[1])
 
-    const result3 = setIn(state, 'foo.bar[1].dog', 7)
+    const result3 = setIn(state, 'foo.bar[1].cat', 7)
     expect(result3).not.toBe(state)
 
     expect(result3).toEqual({
@@ -103,7 +103,7 @@ describe('structure.plain.setIn', () => {
         bar: [
           'baz',
           {
-            dog: 7
+            cat: 7
           }
         ]
       }

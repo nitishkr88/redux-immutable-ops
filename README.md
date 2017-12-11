@@ -13,12 +13,12 @@ Works on the immutable update patters as defined by [Redux](https://redux.js.org
 ## Installation
 ```
 npm install --save redux-immutable-ops
-yarn add redux-immutable-ops
-```
+
+yarn add redux-immutable-ops```
 
 ## Features
 
-* Small
+* Small footprint
 * [Lodash](https://lodash.com/) inspired API
 * Conforms to [Redux](https://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html) standards
 * Interoperable with JavaScript
@@ -28,7 +28,9 @@ yarn add redux-immutable-ops
 ## Example Usage
 Updating Nested Objects in a reducer function.
 
-Set `state.first.second[someId].fourth` from `someValue` key in `action`
+Set `state.first.second[someId].fourth` from `someValue` key in `action`.
+
+**Note**: state should not be mutated
 * Using **spread** operator
 
   ```javascript
@@ -72,7 +74,7 @@ import { setIn } from "redux-immutable-ops"
 
 const state = {
   foo: {
-    bar: ['baz', { dog: 42 }]
+    bar: ['baz', { cat: 42 }]
   }
 }
 
@@ -83,7 +85,7 @@ expect(result1).toEqual({
     bar: [
       'baz',
       {
-        dog: 42
+        cat: 42
       }
     ]
   },
@@ -102,7 +104,7 @@ expect(result2).toEqual({
     bar: [
       'cat',
       {
-        dog: 42
+        cat: 42
       }
     ]
   }
@@ -119,12 +121,12 @@ import { getIn } from "redux-immutable-ops"
 
 const state = {
   foo: {
-    bar: ['baz', { dog: 42 }]
+    bar: ['baz', { cat: 42 }]
   }
 }
 
 expect(getIn(state, 'foo.bar[0]')).toBe('baz')
-expect(getIn(state, 'foo.bar[1].dog')).toBe(42)
+expect(getIn(state, 'foo.bar[1].cat')).toBe(42)
 ```
 
 ### deleteIn(state: Object | Array<\*>, path: string): ?(Object | Array<\*>)
@@ -144,7 +146,7 @@ expect(deleteIn(state, 2)).not.toBe(state)
 
 const state = {
   foo: {
-    bar: ['baz', { dog: 42 }]
+    bar: ['baz', { cat: 42 }]
   }
 }
 
@@ -155,7 +157,7 @@ expect(result1).toEqual({
   foo: {
     bar: [
       {
-        dog: 42
+        cat: 42
       }
     ]
   }
@@ -170,9 +172,16 @@ Similar to [Array.splice](https://developer.mozilla.org/en-US/docs/Web/JavaScrip
 ```javascript
 import { splice } from "redux-immutable-ops"
 
+// insert value at start
 expect(splice(['b', 'c', 'd'], 0, 0, 'a')).toEqual(['a', 'b', 'c', 'd'])
+
+// insert value at end
 expect(splice(['a', 'b', 'c'], 3, 0, 'd')).toEqual(['a', 'b', 'c', 'd'])
+
+// insert value at an index
 expect(splice(['a', 'b', 'd'], 2, 0, 'c')).toEqual(['a', 'b', 'c', 'd'])
+
+// replace value at an index
 expect(splice(['a', 'b', 'c', 'd'], 1, 1, 'e')).toEqual(['a', 'e', 'c', 'd'])
 ```
 

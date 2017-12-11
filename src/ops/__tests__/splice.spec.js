@@ -1,9 +1,9 @@
 import splice from '../splice'
 
-describe('structure.plain.splice', () => {
+describe('ops.splice', () => {
   const testInsertWithValue = value => {
     it('should insert even when initial array is undefined', () => {
-      // really goes to index 0
+      // goes to index 0
       expect(splice(undefined, 2, 0, value)).toEqual([
         undefined,
         undefined,
@@ -61,6 +61,14 @@ describe('structure.plain.splice', () => {
     expect(splice(['a', 'b', 'c', 'd'], 0, 1)).toEqual(['b', 'c', 'd'])
   })
 
+  it('should remove at end', () => {
+    expect(splice(['a', 'b', 'c', 'd'], 3, 1)).toEqual(['a', 'b', 'c'])
+  })
+
+  it('should remove in middle', () => {
+    expect(splice(['a', 'b', 'c', 'd'], 2, 1)).toEqual(['a', 'b', 'd'])
+  })
+
   it('should remove in the middle then insert in that position', () => {
     expect(splice(['a', 'b', 'c', 'd'], 1, 1, 'e')).toEqual([
       'a',
@@ -68,13 +76,5 @@ describe('structure.plain.splice', () => {
       'c',
       'd'
     ])
-  })
-
-  it('should remove at end', () => {
-    expect(splice(['a', 'b', 'c', 'd'], 3, 1)).toEqual(['a', 'b', 'c'])
-  })
-
-  it('should remove in middle', () => {
-    expect(splice(['a', 'b', 'c', 'd'], 2, 1)).toEqual(['a', 'b', 'd'])
   })
 })

@@ -1,8 +1,8 @@
 import getIn from '../getIn'
 
-describe('structure.plain.getIn', () => {
+describe('ops.getIn', () => {
   it('should return undefined if state is undefined', () => {
-    expect(getIn(undefined, 'dog')).toBe(undefined)
+    expect(getIn(undefined, 'cat')).toBe(undefined)
   })
 
   it('should return undefined if any step on the path is undefined', () => {
@@ -27,11 +27,11 @@ describe('structure.plain.getIn', () => {
   it('should get deep values', () => {
     const state = {
       foo: {
-        bar: ['baz', { dog: 42 }]
+        bar: ['baz', { cat: 42 }]
       }
     }
     expect(getIn(state, 'foo.bar[0]')).toBe('baz')
-    expect(getIn(state, 'foo.bar[1].dog')).toBe(42)
+    expect(getIn(state, 'foo.bar[1].cat')).toBe(42)
   })
 
   it('should get a value nested 1 level', () => {
