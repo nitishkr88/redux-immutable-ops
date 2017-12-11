@@ -79,7 +79,7 @@ const state = {
   }
 }
 
-const result1 = setIn(state, 'tv.best.canines[0]', 'scooby')
+const result1 = setIn(state, 'marvel.best.hero[0]', 'punisher')
 expect(result1).not.toBe(state)
 expect(result1).toEqual({
   foo: {
@@ -91,9 +91,9 @@ expect(result1).toEqual({
     ]
   },
 
-  tv: {
+  marvel: {
     best: {
-      canines: ['scooby']
+      hero: ['punisher']
     }
   }
 })
