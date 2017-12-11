@@ -14,7 +14,8 @@ Works on the immutable update patters as defined by [Redux](https://redux.js.org
 ```
 npm install --save redux-immutable-ops
 
-yarn add redux-immutable-ops```
+yarn add redux-immutable-ops
+```
 
 ## Features
 
