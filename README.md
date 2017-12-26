@@ -163,7 +163,146 @@ expect(result1).toEqual({
     ]
   }
 })
+```
 
+### deleteInRecursive(state: Object | Array<\*>, path: string): ?(Object | Array<\*>)
+
+Recursively deletes and cleans up the node and the parent(s) as specified by `path`, and returns a new object. `path` can be a dot-separated list of attribute
+values to traverse. Index of array value which need to be deleted can also be specified in the `path`.
+
+It makes sure that only parents with no remaining children are removed. It also sets the value to undefined if leaf structure is an array.
+
+```javascript
+import { deleteInRecursive } from "redux-immutable-ops"
+
+// should not delete parent if it has other children
+expect(
+  deleteInRecursive(
+    {
+      a: {
+        b: 1,
+        c: 2
+      },
+      d: {
+        e: 3
+      }
+    },
+    'a.b'
+  )
+).toEqualMap({ // extending expect. implementation in source
+  a: {
+    c: 2
+  },
+  d: {
+    e: 3
+  }
+})
+
+// should just set to undefined if leaf structure is an array
+expect(
+  deleteInRecursive(
+    {
+      a: [11, 12, 13]
+    },
+    'a[1]'
+  )
+).toEqualMap({
+  a: [11, undefined, 13]
+})
+
+// should delete parent if no other children is present
+expect(
+  deleteInRecursive(
+    {
+      a: {
+        b: 1,
+        c: 2
+      },
+      d: {
+        e: 3
+      }
+    },
+    'd.e'
+  )
+).toEqualMap({
+  a: {
+    b: 1,
+    c: 2
+  }
+})
+
+```
+### Array specific operations
+---
+
+### pop(array: Array<\*>): Array<\*>
+
+Returns a shallow copy of the array after removing the last element
+
+```javascript
+import { pop } from "redux-immutable-ops"
+
+const arr = ['a', 'b', 'c', 'd']
+expect(pop(arr)).toEqual(['a', 'b', 'c'])
+expect(arr).toEqual(['a', 'b', 'c', 'd'])
+
+// for empty or undefined array
+expect(pop([])).toEqual([])
+expect(pop(undefined)).toEqual([])
+```
+
+### push(array: Array<\*>, value: any): Array<\*>
+
+Returns a shallow copy of the array after pushing the new value
+
+```javascript
+import { push } from "redux-immutable-ops"
+
+const arr1 = [{foo: 'bar'}, 2]
+const arr2 = push(arr1, 3)
+expect(arr2).toEqual([{foo: 'bar'}, 2, 3])
+expect(arr2).not.toBe(arr1)
+ 
+// pushing when initial array is undefined
+expect(push(undefined, {foo: 'bar'})).toEqual([{'foo': 'bar'}])
+```
+
+### shift(array: Array<\*>): Array<\*>
+
+Returns a shallow copy of the array with the first element removed
+
+```javascript
+import { shift } from "redux-immutable-ops"
+
+const arr1 = ['a', 'b', 'c']
+const arr2 = shift(arr1)
+expect(arr2).toEqual(['b', 'c'])
+expect(arr1).toEqual(['a', 'b', 'c'])
+
+// for empty or undefined array
+expect(shift([])).toEqual([])
+expect(shift(undefined)).toEqual([])
+```
+
+### unshift(array: Array<\*>, ...values: any[]): Array<\*>
+
+Returns a shallow copy of the array with one or more elements added to the beginning
+
+```javascript
+import { unshift } from "redux-immutable-ops"
+
+expect(unshift(['b', 'c'], 'a')).toEqual(['a', 'b', 'c'])
+
+const arr = ['c', 'd']
+expect(unshift(arr, 'a', 'b')).toEqual(['a', 'b', 'c', 'd'])
+expect(unshift(arr, 'e', 'f')).toEqual(['e', 'f', 'c', 'd'])
+expect(arr).toEqual(['c', 'd'])
+
+// for emtpty or underfined arrays
+expect(unshift([], 'a')).toEqual(['a'])
+expect(unshift([], 'a', 'b', 'c')).toEqual(['a', 'b', 'c'])
+expect(unshift(undefined, 'a')).toEqual(['a'])
+expect(unshift(undefined, 'a', 'b', 'c')).toEqual(['a', 'b', 'c'])
 ```
 
 ### splice(array: Array<\*>, index: number, removeNum: number, value: any): Array<\*>

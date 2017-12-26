@@ -1,4 +1,4 @@
-import splice from '../splice'
+import splice from '../array/splice'
 
 describe('ops.splice', () => {
   const testInsertWithValue = value => {
