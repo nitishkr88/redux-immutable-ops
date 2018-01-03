@@ -8,7 +8,7 @@
 A collection of helper functions to perform immutable operations on plain JavaScript objects and arrays.
 Works on the immutable update patters as defined by [Redux](https://redux.js.org/docs/recipes/reducers/ImmutableUpdatePatterns.html).
 
-[Presentation](https://nitishkr88.github.io/redux-immutable-ops/presentations/immutability_patterns)
+[Article](https://medium.com/@nitishkr88/immutability-in-react-and-redux-7137f7b3197)
 
 ## Installation
 ```
